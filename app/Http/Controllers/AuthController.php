@@ -44,6 +44,9 @@ class AuthController extends Controller
     }
 
     public function register(Request $request){
+
+        dd($request->toArray());
+
         $validator = Validator::make($request->all(), [
             'login' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:users',
