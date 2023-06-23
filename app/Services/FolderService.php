@@ -15,6 +15,7 @@ class FolderService
         $file = $request->file('file');
 
         $path = $file->store('archives', 'local');
+        return 'test';
 
         $folder = Folder::create([
             'name' => $file->getClientOriginalName(),

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use App\Models\Folder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Services\FolderService;
 
 class FolderController extends Controller
@@ -13,17 +12,6 @@ class FolderController extends Controller
     public function createFolder(Request $request)
     {
         $service = new FolderService;
-
-        $validator = Validator::make($request->all(), [
-            'file' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => 0,
-                'errors' => $validator->errors()->toArray(),
-            ]);
-        }
 
         $result = $service->createFolder($request);
 
