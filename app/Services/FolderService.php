@@ -26,7 +26,7 @@ class FolderService
         }
 
         $dirName = str_replace(" ", '', $file->getClientOriginalName());
-        $archivePath = $file->storeAs('uploads/archives', $dirName);
+        $archivePath = $file->move($dirPath, $dirName);
 
         if (!$archivePath) {
             return 'Error: Failed to save file.';
