@@ -27,6 +27,8 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(FolderController::class)->group(function () {
     Route::post('folder', 'createFolder');
+    Route::get('folder', 'getFolders');
+    Route::get('files', 'getFiles');
 });
 
 Route::controller(TgController::class)->group(function () {

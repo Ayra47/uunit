@@ -25,10 +25,18 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => 0,
+                'errors' => $validator->errors()->toArray(),
+            ]);
+        }
+        
         $credentials = $request->only('email', 'password');
 
         $token = Auth::attempt($credentials);

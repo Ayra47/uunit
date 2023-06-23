@@ -17,7 +17,8 @@ class Folder extends Model
         'name',
         'folder_name',
         'name',
-        'path'
+        'path',
+        'user_id'
     ];
 
     public function files(): HasMany
