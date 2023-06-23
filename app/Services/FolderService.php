@@ -28,18 +28,6 @@ class FolderService
         $dirName = str_replace(" ", '', $file->getClientOriginalName());
         $archivePath = $file->storeAs('uploads/archives', $dirName);
 
-        // $dirPath = storage_path('app/uploads/archives');
-
-        // if (!is_dir($dirPath)) {
-        //     if (!mkdir($dirPath, 0777, true)) {
-        //         return 'Error: Failed to create directory.';
-        //     }
-        // }
-
-        // $file = $request->file('file');
-        // $dirName = str_replace(" ", '', $file->getClientOriginalName());
-        // $archivePath = $file->storeAs('uploads/archives', $dirName);
-
         $folder = Folder::create([
             'name' => $file->getClientOriginalName(),
             'user_id' => auth()->id(),
@@ -68,7 +56,7 @@ class FolderService
 
                     File::create([
                         'name' => "file_$i.pdf",
-                        'path' => $file_path . "/file_$i.pdf",
+                        'path' => $dirName . "/file_$i.pdf",
                         'folder_id' => $folder->id
                     ]);
                 }
