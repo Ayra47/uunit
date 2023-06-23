@@ -58,6 +58,11 @@ class FolderService
                 }
             }
             $zip->close();
+        } else {
+            return response()->json([
+                'success' => 0,
+                'message' => "Архив не смог открыться"
+            ]);
         }
 
         // делаю запрос на бэк к Диме
