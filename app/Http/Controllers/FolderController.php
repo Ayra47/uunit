@@ -12,13 +12,10 @@ class FolderController extends Controller
 {
     public FolderService $service;
 
-    public function __construct()
-    {
-        $this->service = new FolderService();
-    }
-
     public function createFolder(Request $request)
     {
+        $this->service = new FolderService;
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
             'file' => 'required|file'
