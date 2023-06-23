@@ -14,7 +14,7 @@ class FolderController extends Controller
 
     public function __construct()
     {
-        $this->service = new FolderService;
+        $this->service = new FolderService();
     }
 
     public function createFolder(Request $request)
