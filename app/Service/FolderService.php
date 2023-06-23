@@ -46,4 +46,16 @@ class FolderService
 
         return 'Юху ошибки нет';
     }
+
+    protected function sendFile()
+    {
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'http://www.example.com/user/create', [
+            'form_params' => [
+                'email' => 'test@gmail.com',
+                'name' => 'Test user',
+                'password' => 'testpassword',
+            ]
+        ]);
+    }
 }

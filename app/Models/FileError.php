@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FileError extends Model
@@ -18,4 +19,9 @@ class FileError extends Model
         'file_id',
         'description'
     ];
+    
+    public function file(): BelongsTo
+    {
+        return $this->belongsTo(File::class, 'file_id');
+    }
 }
