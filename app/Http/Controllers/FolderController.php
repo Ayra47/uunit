@@ -15,7 +15,7 @@ class FolderController extends Controller
         $service = new FolderService;
 
         $validator = Validator::make($request->all(), [
-            'file' => 'required|file'
+            'file' => 'required'
         ]);
 
         if ($validator->fails()) {
