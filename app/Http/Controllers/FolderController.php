@@ -10,11 +10,9 @@ use Illuminate\Support\Facades\Validator;
 
 class FolderController extends Controller
 {
-    public FolderService $service;
-
     public function createFolder(Request $request)
     {
-        $this->service = new FolderService;
+        $service = new FolderService;
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|between:2,100',
@@ -28,7 +26,7 @@ class FolderController extends Controller
             ]);
         }
 
-        $result = $this->service->createFolder($request);
+        $result = $service->createFolder($request);
 
         return response()->json([
             'success' => 1,
