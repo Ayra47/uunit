@@ -12,6 +12,11 @@ class FolderService
 {
     public function createFolder(Request $request)
     {
+        $file = $request->file('file');
+        if (!$file) {
+            return 'Error: File not found.';
+        }
+
         $dirPath = storage_path('app/uploads/archives');
 
         if (!is_dir($dirPath)) {
@@ -20,9 +25,25 @@ class FolderService
             }
         }
 
-        $file = $request->file('file');
         $dirName = str_replace(" ", '', $file->getClientOriginalName());
         $archivePath = $file->storeAs('uploads/archives', $dirName);
+
+        if (!$archivePath) {
+            return 'Error: Failed to save file.';
+        } else {
+            return $archivePath;
+        }
+        // $dirPath = storage_path('app/uploads/archives');
+
+        // if (!is_dir($dirPath)) {
+        //     if (!mkdir($dirPath, 0777, true)) {
+        //         return 'Error: Failed to create directory.';
+        //     }
+        // }
+
+        // $file = $request->file('file');
+        // $dirName = str_replace(" ", '', $file->getClientOriginalName());
+        // $archivePath = $file->storeAs('uploads/archives', $dirName);
 
         $folder = Folder::create([
             'name' => $file->getClientOriginalName(),
