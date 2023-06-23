@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Service\FolderService;
 use App\Models\File;
 use App\Models\Folder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Services\FolderService;
 
 class FolderController extends Controller
 {

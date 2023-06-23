@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Service;
+namespace App\Services;
 
 use App\Models\File;
 use App\Models\Folder;
