@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FolderController;
+use App\Http\Controllers\TgController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,8 +18,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(AuthController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('register', 'register');
-    Route::post('logout', 'logout');
-    Route::post('refresh', 'refresh');
+    Route::post('auth/login', 'login');
+    Route::post('auth/register', 'register');
+    Route::post('auth/logout', 'logout');
+    Route::post('auth/refresh', 'refresh');
+    Route::post('auth/me', 'me');
+});
+
+Route::controller(FolderController::class)->group(function () {
+    Route::post('folder', 'createFolder');
+});
+
+Route::controller(TgController::class)->group(function () {
+    Route::post('error', 'sendErrors');
 });
