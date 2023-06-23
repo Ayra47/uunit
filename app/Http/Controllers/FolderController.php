@@ -9,6 +9,11 @@ use App\Services\FolderService;
 
 class FolderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => []]);
+    }
+
     public function createFolder(Request $request)
     {
         $service = new FolderService;

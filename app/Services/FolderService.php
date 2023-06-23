@@ -13,9 +13,9 @@ class FolderService
     public function createFolder(Request $request)
     {
         $file = $request->file('file');
-
-        $path = $file->store('archives', 'local');
-        return 'test';
+        $filename = $file->getClientOriginalName();
+        $file->move(storage_path('app/uploads/archives'), $filename);
+        $path = storage_path('app') . '/uploads/archives/' . $filename;
 
         $folder = Folder::create([
             'name' => $file->getClientOriginalName(),
