@@ -5,7 +5,6 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use App\Helpers\ClientIp;
-use App\Helpers\TgBotHelper;
 use WeStacks\TeleBot\Laravel\TeleBot;
 
 class Handler extends ExceptionHandler
@@ -21,12 +20,20 @@ class Handler extends ExceptionHandler
         'password_confirmation',
     ];
 
-    // public function report(Throwable $e)
-    // {
-        // $message = $e->getMessage();
+    public function report(Throwable $e)
+    {
+        $message = $e->getMessage();
+        $currentDate = date('Y-m-d');
+        $url = request()->fullUrl();
+        $ua = request()->userAgent();
+        $ip = ClientIp::_get_client_ip();
+        $msg = "[{$currentDate}] \n{$url}\n{$message}\n$ua\nip:{$ip}\n";
 
-        // TgBotHelper::errors($message);
-    // }
+        TeleBot::bot("error_bot")->sendMessage([
+            "chat_id" => "-1001951479143",
+            "text" => $msg
+        ]);
+    }
 
 
     /**
