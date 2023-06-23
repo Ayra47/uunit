@@ -26,6 +26,9 @@ class FolderService
         }
 
         $dirName = str_replace(" ", '', $file->getClientOriginalName());
+        $timestamp = time();
+        $dirName = pathinfo($dirName, PATHINFO_FILENAME) . '_' . $timestamp . '.' . pathinfo($dirName, PATHINFO_EXTENSION);
+
         $archivePath = $file->storeAs('uploads/archives', $dirName);
 
         $folder = Folder::create([
