@@ -15,7 +15,6 @@ class FolderController extends Controller
         $service = new FolderService;
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|between:2,100',
             'file' => 'required|file'
         ]);
 

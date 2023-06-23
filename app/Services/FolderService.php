@@ -17,7 +17,7 @@ class FolderService
         $path = $file->store('archives', 'local');
 
         $folder = Folder::create([
-            'name' => $request['name'],
+            'name' => $file->getClientOriginalName(),
             'user_id' => auth()->id(),
             'folder_name' => '',
             'path' => $path,
@@ -37,7 +37,7 @@ class FolderService
         foreach ($files as $key => $path) {
             File::create([
                 'folder_id' => $folder->id,
-                'name' => $file->getClientOriginalName(),
+                'name' => $file->getClientOriginalName() . $key,
                 'path' => $path,
             ]);
         }
