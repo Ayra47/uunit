@@ -74,11 +74,11 @@ class FolderService
                 if (substr($filename, -1) !== '/' && pathinfo($filename, PATHINFO_EXTENSION) == "pdf") {
                     // save file in storage_path('app/uploads/archives/files/$filename');
                     $contents = $zip->getFromIndex($i);
-                    $file_path = $dirPath . "/files/" .  dirname($filename) ;
+                    $file_path2 = $dirPath . "/files/" . "$dirName/" . dirname($filename);
 
-                    $this->checkedDir($file_path);
+                    $this->checkedDir($file_path2);
 
-                    file_put_contents($file_path . "/file_$i.pdf", $contents);
+                    file_put_contents($file_path2 . "/file_$i.pdf", $contents);
                     File::create([
                         'name' => "file_$i.pdf",
                         'path' => dirname($filename) . "/file_$i.pdf",
