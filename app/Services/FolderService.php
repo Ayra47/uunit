@@ -19,16 +19,12 @@ class FolderService
 
         $dirPath = storage_path('app/uploads/archives');
 
-        if (!is_dir($dirPath)) {
-            if (!mkdir($dirPath, 0777, true)) {
-                return 'Error: Failed to create directory.';
-            }
-        }
+        $this->checkedDir($dirPath);
 
+        // получение пути и сохранения его по имени файл_таймстамп
         $dirName = str_replace(" ", '', $file->getClientOriginalName());
         $timestamp = time();
         $dirName = pathinfo($dirName, PATHINFO_FILENAME) . '_' . $timestamp . '.' . pathinfo($dirName, PATHINFO_EXTENSION);
-
         $archivePath = $file->storeAs('uploads/archives', $dirName);
 
         $folder = Folder::create([
@@ -38,39 +34,7 @@ class FolderService
             'path' => $archivePath,
         ]);
 
-        $zip = new ZipArchive;
-
-        $path = storage_path('app/' . $archivePath);
-        if ($zip->open($path) === TRUE) {
-            for ($i = 0; $i < $zip->numFiles; $i++) {
-                $filename = $zip->getNameIndex($i);
-                if (substr($filename, -1) !== '/' && pathinfo($filename, PATHINFO_EXTENSION) == "pdf") {
-                    // save file in storage_path('app/uploads/archives/files/$filename');
-                    $contents = $zip->getFromIndex($i);
-                    $file_path = $dirPath . "/files/" . pathinfo($dirName, PATHINFO_FILENAME);
-
-                    if (!is_dir($file_path)) {
-                        if (!mkdir($file_path, 0777, true)) {
-                            return 'Error: Failed to create directory.';
-                        }
-                    }
-
-                    file_put_contents($file_path . "/file_$i.pdf", $contents);
-
-                    File::create([
-                        'name' => "file_$i.pdf",
-                        'path' => $dirName . "/file_$i.pdf",
-                        'folder_id' => $folder->id
-                    ]);
-                }
-            }
-            $zip->close();
-        } else {
-            return response()->json([
-                'success' => 0,
-                'message' => "Архив не смог открыться"
-            ]);
-        }
+        $this->zipWork($archivePath, $dirName, $dirPath, $folder);
 
         // делаю запрос на бэк к Диме
 
@@ -87,5 +51,44 @@ class FolderService
                 'password' => 'testpassword',
             ]
         ]);
+    }
+
+    protected function checkedDir($file_path)
+    {
+        if (!is_dir($file_path)) {
+            if (!mkdir($file_path, 0777, true)) {
+                return 'Error: Failed to create directory.';
+            }
+        }
+    }
+
+    protected function zipWork($archivePath, $dirName, $dirPath, $folder)
+    {
+        $zip = new ZipArchive;
+
+        $path = storage_path('app/' . $archivePath);
+        if ($zip->open($path) === TRUE) {
+            for ($i = 0; $i < $zip->numFiles; $i++) {
+                $filename = $zip->getNameIndex($i);
+                if (substr($filename, -1) !== '/' && pathinfo($filename, PATHINFO_EXTENSION) == "pdf") {
+                    // save file in storage_path('app/uploads/archives/files/$filename');
+                    $contents = $zip->getFromIndex($i);
+                    $file_path = $dirPath . "/files/" . pathinfo($dirName, PATHINFO_FILENAME);
+
+                    $this->checkedDir($file_path);
+
+                    file_put_contents($file_path . "/file_$i.pdf", $contents);
+
+                    File::create([
+                        'name' => "file_$i.pdf",
+                        'path' => $dirName . "/file_$i.pdf",
+                        'folder_id' => $folder->id
+                    ]);
+                }
+            }
+            $zip->close();
+        } else {
+            return 'Архив не смог открыться';
+        }
     }
 }
