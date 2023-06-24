@@ -15,7 +15,7 @@ class MlController extends Controller
         $this->service = new MlService;
     }
     
-    public function getInfo(Request $request)
+    public function getInfo(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'folder_id' => 'required|string',

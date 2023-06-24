@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FolderController;
+use App\Http\Controllers\MlController;
 use App\Http\Controllers\TgController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,10 @@ Route::controller(FolderController::class)->group(function () {
     Route::post('folder', 'createFolder');
     Route::get('folders', 'getFolders');
     Route::get('folders/{id}/files', 'getFiles');
+});
+
+Route::controller(MlController::class)->group(function () {
+    Route::post('folder/{id}/get-info', 'getInfo');
 });
 
 Route::controller(TgController::class)->group(function () {
