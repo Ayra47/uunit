@@ -40,6 +40,15 @@ class FolderController extends Controller
     public function getFiles($id)
     {
         $model = File::where('folder_id', $id)->with('errors')->get();
+        $res = [];
+
+        foreach ($model as $key => $item) {
+            $last_slash_pos = strrpos($item->path, '/');
+            if ($last_slash_pos !== false) {
+                $new_string = substr($item->path, 0, $last_slash_pos);
+                $item->path = $new_string; // Выведет "Test Small"
+            }
+        }
 
         return response()->json([
             'success' => 1,

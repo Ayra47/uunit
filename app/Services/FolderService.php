@@ -25,6 +25,7 @@ class FolderService
         $dirName = str_replace(" ", '', $file->getClientOriginalName());
         $timestamp = time();
         $dirName = pathinfo($dirName, PATHINFO_FILENAME) . '_' . $timestamp . '.' . pathinfo($dirName, PATHINFO_EXTENSION);
+
         $archivePath = $file->storeAs('uploads/archives', $dirName);
 
         $folder = Folder::create([
@@ -73,15 +74,14 @@ class FolderService
                 if (substr($filename, -1) !== '/' && pathinfo($filename, PATHINFO_EXTENSION) == "pdf") {
                     // save file in storage_path('app/uploads/archives/files/$filename');
                     $contents = $zip->getFromIndex($i);
-                    $file_path = $dirPath . "/files/" . pathinfo($dirName, PATHINFO_FILENAME);
+                    $file_path = $dirPath . "/files/" .  dirname($filename) ;
 
                     $this->checkedDir($file_path);
 
                     file_put_contents($file_path . "/file_$i.pdf", $contents);
-
                     File::create([
                         'name' => "file_$i.pdf",
-                        'path' => $dirName . "/file_$i.pdf",
+                        'path' => dirname($filename) . "/file_$i.pdf",
                         'folder_id' => $folder->id
                     ]);
                 }
