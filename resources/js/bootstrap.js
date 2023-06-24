@@ -39,6 +39,6 @@ window.Echo = new Echo({
     wsPort: 6001,
     forceTLS: false,
     disableStats: true,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER ?? "mt1",
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
     disableStatus: true
 });

@@ -13,12 +13,13 @@
 </body>
 @vite('resources/js/app.js')
 <script>
-    // setTimeout(() => {
-    //     window.Echo.channel('front')
-    //         .listen('.MyWebSocket', (e) => {
-    //             console.log('e', e);
-    //         })
-    // }, 200);
+    setTimeout(() => {
+        console.log('thirs');
+        window.Echo.channel('front')
+            .listen('.MyWebSocket', (e) => {
+                console.log('e', e);
+            })
+    }, 200);
     console.log('page message');
 
     // работает с дашбордом
