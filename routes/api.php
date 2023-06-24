@@ -34,6 +34,8 @@ Route::controller(FolderController::class)->group(function () {
 
 Route::controller(MlController::class)->group(function () {
     Route::post('folder/{id}/get-info', 'getInfo');
+    Route::get('folder/{id}/send-message', 'sendMessage');
+    Route::get('test', 'sendMessage');
 });
 
 Route::controller(TgController::class)->group(function () {

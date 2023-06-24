@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\FrontWebsocket;
 use App\Services\MlService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -31,6 +32,14 @@ class MlController extends Controller
         return response()->json([
             'success' => 1,
             'data' => $this->service->getInfo($request),
+        ]);
+    }
+
+    public function sendMessage(Request $request)
+    {
+        FrontWebsocket::dispatch([
+            "file_name" => $request['file_name'],
+            "message" => $request['message'] ?? "no message",
         ]);
     }
 }
