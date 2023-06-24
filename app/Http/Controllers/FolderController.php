@@ -40,7 +40,6 @@ class FolderController extends Controller
     public function getFiles($id)
     {
         $model = File::where('folder_id', $id)->with('errors')->get();
-        $res = [];
 
         foreach ($model as $key => $item) {
             $last_slash_pos = strrpos($item->path, '/');

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\File;
+use App\Models\FileError;
 use App\Models\Folder;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -117,8 +118,41 @@ class FolderService
         echo "Время выполнения запроса: " . $request_time . " секунд" . PHP_EOL;
 
         // return $response->getBody()->getContents();
-        $dev = $response->getBody()->getContents();
+        $result = $response->getBody()->getContents();
+        $result = json_decode($result);
 
-        return json_decode($dev);
+        // if (count($result['files'])) {
+        //     $this->storeToErrors($result['files']);
+        // }
+        $this->summaryFilePercent($model->id);
+
+        return $result;
+    }
+
+    protected function storeToErrors($data, $folder_id)
+    {
+        foreach ($data as $key => $item) {
+            $file = File::where('name', $item['file_name'])->where('folder_id', $folder_id)->first();
+            
+            if ($file) {
+                FileError::create([
+                    'name' => $item['name'] ?? "error",
+                    'file_id' => $file->id,
+                    'page' => $item['page'] ?? "0",
+                    'description' => $item['description'] ?? "no description"
+                ]);
+            }
+        }
+    }
+
+    protected function summaryFilePercent($folder_id)
+    {
+        $allFiles = File::where('folder_id', $folder_id)->get();
+        $errorFiles = File::where('folder_id', $folder_id)->whereHas('errors')->get();
+
+        $sum = (1 - ($errorFiles / $allFiles)) * 100;
+        Folder::where('id', $folder_id)->update([
+            'precision' => $sum
+        ]);
     }
 }

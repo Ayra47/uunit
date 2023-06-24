@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\FrontWebsocket;
+use App\Models\File;
+use App\Models\FileError;
 use App\Services\MlService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -39,12 +41,27 @@ class MlController extends Controller
     {
         if ($request['id']) {
             $data = $request->toArray();
+
+            // $file = File::where('name', $data['files'][0]['file_name'])->where('folder_id', $data['id'])->first();
+            // $file->is_ready = 1;
+            // $file->save();
+
+            foreach ($data['files'] as $key => $item) {
+                if ($item['description']) {
+                    FileError::create([
+                        'name' => $item['name'],
+                        'file_id' => 10,
+                        'page' => $item['page'] ?? 0,
+                        'description' => $item['description'] ?? "no description"
+                    ]);
+                }
+            }
         } else {
             $data = [
                 'id' => 123,
                 'files' => [
                     [
-                        'file_name' => '3.pdf',
+                        'file_name' => '1.pdf',
                         'folder' => '12',
                         'name' => 'Starts on 45',
                         'description' => 'Allowed differences:\n',
@@ -61,8 +78,8 @@ class MlController extends Controller
             ];
         }
 
-        FrontWebsocket::dispatch([
-            ...$data
-        ]);
+        FrontWebsocket::dispatch($data);
+
+        return 1;
     }
 }

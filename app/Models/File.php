@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class File extends Model
@@ -17,6 +18,7 @@ class File extends Model
         'name',
         'folder_id',
         'path',
+        'is_ready'
     ];
 
     public function folder(): BelongsTo
@@ -24,8 +26,8 @@ class File extends Model
         return $this->belongsTo(CompanyUser::class, 'folder_id');
     }
     
-    public function errors(): BelongsTo
+    public function errors(): HasMany
     {
-        return $this->belongsTo(FileError::class, 'file_id');
+        return $this->hasMany(FileError::class, 'file_id');
     }
 }
