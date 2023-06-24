@@ -95,25 +95,13 @@ class FolderService
     {
         $model = Folder::where('id', $id)->first();
 
-        $dirTo = "/var/www/html/uunit/storage/app/uploads/other-files/" . $model->folder_name;
-        Process::run("zip" . " $dirTo" . " " . "/var/www/html/uunit/storage/app/uploads/archives/files/" . $model->folder_name . "/");
+        $dirTo = "../storage/app/uploads/other-files/" . $model->folder_name;
+        $dirFrom = "../storage/app/uploads/archives/files/" . $model->folder_name;
 
-        // $form_params = [
-        //     'extra_name' => '"КАББАЛКГИПРОТРАНС"',
-        //     'id' => $model->id,
-        // ];
-        // $client = new \GuzzleHttp\Client();
-
-        // $res = $client->request('POST', "http://178.205.138.31:6432/check_project?extra_name=" . $form_params['extra_name'] . "&id=" . $form_params['id'], [
-        //     'multipart' => [
-        //         [
-        //             'name'     => 'file',
-        //             'contents' => file_get_contents($dirTo),
-        //             'filename' => $model->folder_name,
-        //         ],
-        //     ],
-        // ]);
-
+        $res = Process::run("ls ../storage/app/uploads/archives/files/" . $model->folder_name);
+        $res2 = Process::run("ls $dirFrom/Test\ Small");
+        
+        $ex = exec("zip -r -j $dirTo $dirFrom");
 
         $url_i = 'http://178.205.138.31:6432/check_project';
 
@@ -143,6 +131,8 @@ class FolderService
         echo "Время выполнения запроса: " . $request_time . " секунд" . PHP_EOL;
 
         // return $response->getBody()->getContents();
-        dd($response->getBody()->getContents());
+        $dev = $response->getBody()->getContents();
+
+        return $dev;
     }
 }
