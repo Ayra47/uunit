@@ -37,20 +37,9 @@ class FolderController extends Controller
         ]);
     }
 
-    public function getFiles(Request $request)
+    public function getFiles($id)
     {
-        $validator = Validator::make($request->all(), [
-            'folder_id' => 'required|exists:folder,id',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => 0,
-                'errors' => $validator->errors()->toArray(),
-            ]);
-        }
-
-        $model = File::where('folder_id', $request['folder_id'])->with('errors')->get();
+        $model = File::where('folder_id', $id)->with('errors')->get();
 
         return response()->json([
             'success' => 1,
