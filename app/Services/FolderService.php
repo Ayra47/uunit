@@ -8,6 +8,7 @@ use App\Models\Folder;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Process;
+use Throwable;
 use ZipArchive;
 
 class FolderService
@@ -39,7 +40,7 @@ class FolderService
 
         $this->zipWork($archivePath, $dirName, $dirPath, $folder);
 
-        return $this->ZipTo($folder->id, $request);
+        return $this->ZipTo($file, $folder->id, $request);
     }
 
     protected function checkedDir($file_path)
@@ -80,7 +81,7 @@ class FolderService
         }
     }
 
-    public function ZipTo($id, Request $request)
+    public function ZipTo($file, $id, Request $request)
     {
         $model = Folder::where('id', $id)->first();
 
@@ -89,7 +90,7 @@ class FolderService
 
         $res = Process::run("ls ../storage/app/uploads/archives/files/" . $model->folder_name);
         $res2 = Process::run("ls $dirFrom/Test\ Small");
-        
+
         $ex = exec("zip -r -j $dirTo $dirFrom");
 
         $url_i = 'http://178.205.138.31:6432/check_project';
@@ -103,7 +104,7 @@ class FolderService
         $client = new Client();
 
         $start_time = microtime(true);
-        $response = $client->request('POST', $url_i, [
+        $resp = $client->request('POST', $url_i, [
             'query' => $data,
             'multipart' => [
                 [
@@ -117,23 +118,20 @@ class FolderService
         $request_time = $end_time - $start_time;
         echo "Время выполнения запроса: " . $request_time . " секунд" . PHP_EOL;
 
-        // return $response->getBody()->getContents();
-        $result = $response->getBody()->getContents();
-        $result = json_decode($result);
+        $result = $resp->getBody()->getContents();
+        $data = json_decode($result, true);
 
-        // if (count($result['files'])) {
-        //     $this->storeToErrors($result['files']);
-        // }
+        $this->storeToErrors($data['files'], $model->id);
         $this->summaryFilePercent($model->id);
 
-        return $result;
+        return $data;
     }
 
     protected function storeToErrors($data, $folder_id)
     {
         foreach ($data as $key => $item) {
             $file = File::where('name', $item['file_name'])->where('folder_id', $folder_id)->first();
-            
+
             if ($file) {
                 FileError::create([
                     'name' => $item['name'] ?? "error",
@@ -150,7 +148,7 @@ class FolderService
         $allFiles = File::where('folder_id', $folder_id)->get();
         $errorFiles = File::where('folder_id', $folder_id)->whereHas('errors')->get();
 
-        $sum = (1 - ($errorFiles / $allFiles)) * 100;
+        $sum = (1 - (count($errorFiles) / count($allFiles))) * 100;
         Folder::where('id', $folder_id)->update([
             'precision' => $sum
         ]);
