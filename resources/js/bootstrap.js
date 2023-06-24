@@ -23,7 +23,7 @@ window.Pusher = Pusher;
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '213123123',
-    wsHost: "127.0.0.1",
+    wsHost: window.location.href,
     wsPort: 6001,
     forceTLS: false,
     disableStats: true,
