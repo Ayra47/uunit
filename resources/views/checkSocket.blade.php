@@ -15,7 +15,7 @@
 <script>
     setTimeout(() => {
         console.log('first');
-        window.Echo2.channel('front')
+        window.Echo.channel('front')
             .listen('.MyWebSocket', (e) => {
                 console.log('e', e);
             })
@@ -24,7 +24,7 @@
     
     setTimeout(() => {
         console.log('second');
-        window.Echo2.channel('front')
+        window.Echo.channel('front')
             .listen('MyWebSocket', (e) => {
                 console.log('e', e);
             })
