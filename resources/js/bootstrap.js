@@ -23,9 +23,9 @@ window.Pusher = Pusher;
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '213123123',
-    wsHost: "family-clients.ru/ws",
+    wsHost: "ws.family-clients.ru",
     wsPort: 6001,
-    forceTLS: true,
+    forceTLS: false,
     disableStats: true,
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
     disableStatus: true,
