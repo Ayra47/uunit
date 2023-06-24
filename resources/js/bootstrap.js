@@ -29,4 +29,5 @@ window.Echo = new Echo({
     disableStats: true,
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
     disableStatus: true,
+    enabledTransports: ['ws', 'wss'],
 });
