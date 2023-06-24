@@ -71,4 +71,15 @@ class FolderController extends Controller
             'message' => "Удалено"
         ]);
     }
+
+    public function searchFolder(Request $request)
+    {
+        $text = $request['text'];
+        $model = Folder::where("folder_name", "LIKE", "%$text%")->paginate(10);
+
+        return response()->json([
+            'success' => 1,
+            'data' => $model
+        ]);
+    }
 }
