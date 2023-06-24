@@ -29,7 +29,8 @@ window.Echo2 = new Echo({
     // wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
     forceTLS:  false, // (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
     // enabledTransports: ['ws', 'wss'],
-    disableStatus: true
+    disableStatus: true,
+    disableStats: true,
 });
 
 window.Echo = new Echo({
@@ -39,6 +40,7 @@ window.Echo = new Echo({
     wsPort: 6001,
     forceTLS: false,
     disableStats: true,
+    disableStats: true,
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
-    disableStatus: true
+    disableStatus: true,
 });
