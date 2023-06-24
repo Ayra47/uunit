@@ -133,6 +133,6 @@ class FolderService
         // return $response->getBody()->getContents();
         $dev = $response->getBody()->getContents();
 
-        return $dev;
+        return json_decode($dev);
     }
 }
