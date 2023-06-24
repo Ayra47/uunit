@@ -38,7 +38,7 @@ class FolderService
 
         $this->zipWork($archivePath, $dirName, $dirPath, $folder);
 
-        return $this->ZipTo($folder->id);
+        return $this->ZipTo($folder->id, $request);
     }
 
     protected function sendFile()
@@ -91,7 +91,7 @@ class FolderService
         }
     }
 
-    public function ZipTo($id)
+    public function ZipTo($id, Request $request)
     {
         $model = Folder::where('id', $id)->first();
 
@@ -108,7 +108,7 @@ class FolderService
         // Prepare the request data
         $data = [
             'id' => $model->id,
-            'extra_name' => 'Общество с ограниченной ответственностью "КАББАЛКГИПРОТРАНС"',
+            'extra_name' => $request['extra_name'],
         ];
 
         // Set the file path of the archive to be uploaded
