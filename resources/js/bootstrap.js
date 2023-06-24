@@ -23,7 +23,7 @@ window.Pusher = Pusher;
 window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '213123123',
-    wsHost: "ws.family-clients.ru",
+    wsHost: "family-clients.ru/ws",
     wsPort: 6001,
     forceTLS: false,
     disableStats: true,
