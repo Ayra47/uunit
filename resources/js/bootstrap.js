@@ -25,7 +25,7 @@ window.Echo = new Echo({
     key: '213123123',
     wsHost: "ws.family-clients.ru",
     wsPort: 6002,
-    forceTLS: false,
+    forceTLS: true,
     disableStats: true,
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
     disableStatus: true,
