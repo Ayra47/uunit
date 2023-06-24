@@ -4,9 +4,10 @@ namespace App\Services;
 
 use App\Models\File;
 use App\Models\Folder;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Process;
 use ZipArchive;
-use Illuminate\Support\Facades\Storage;
 
 class FolderService
 {
@@ -37,9 +38,7 @@ class FolderService
 
         $this->zipWork($archivePath, $dirName, $dirPath, $folder);
 
-        // делаю запрос на бэк к Диме
-
-        return 'Юху ошибки нет';
+        return $this->ZipTo($folder->id);
     }
 
     protected function sendFile()
@@ -90,5 +89,60 @@ class FolderService
         } else {
             return 'Архив не смог открыться';
         }
+    }
+
+    public function ZipTo($id)
+    {
+        $model = Folder::where('id', $id)->first();
+
+        $dirTo = "/var/www/html/uunit/storage/app/uploads/other-files/" . $model->folder_name;
+        Process::run("zip" . " $dirTo" . " " . "/var/www/html/uunit/storage/app/uploads/archives/files/" . $model->folder_name . "/");
+
+        // $form_params = [
+        //     'extra_name' => '"КАББАЛКГИПРОТРАНС"',
+        //     'id' => $model->id,
+        // ];
+        // $client = new \GuzzleHttp\Client();
+
+        // $res = $client->request('POST', "http://178.205.138.31:6432/check_project?extra_name=" . $form_params['extra_name'] . "&id=" . $form_params['id'], [
+        //     'multipart' => [
+        //         [
+        //             'name'     => 'file',
+        //             'contents' => file_get_contents($dirTo),
+        //             'filename' => $model->folder_name,
+        //         ],
+        //     ],
+        // ]);
+
+
+        $url_i = 'http://178.205.138.31:6432/check_project';
+
+        // Prepare the request data
+        $data = [
+            'id' => $model->id,
+            'extra_name' => 'Общество с ограниченной ответственностью "КАББАЛКГИПРОТРАНС"',
+        ];
+
+        // Set the file path of the archive to be uploaded
+
+        // Create a Guzzle client instance
+        $client = new Client();
+
+        $start_time = microtime(true);
+        $response = $client->request('POST', $url_i, [
+            'query' => $data,
+            'multipart' => [
+                [
+                    'name' => 'request_archive',
+                    'contents' => fopen($dirTo, 'rb')
+                ]
+            ]
+        ]);
+        $end_time = microtime(true);
+        $request_time = $end_time - $start_time;
+        echo "Время выполнения запроса: " . $request_time . " секунд" . PHP_EOL;
+
+        // return $response->getBody()->getContents();
+        dd($response->getBody()->getContents());
     }
 }

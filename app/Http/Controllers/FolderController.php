@@ -55,4 +55,10 @@ class FolderController extends Controller
             'data' => $model
         ]);
     }
+
+    public function ZipTo($id)
+    {
+        $service = new FolderService;
+        return $service->ZipTo($id);
+    }
 }
