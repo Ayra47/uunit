@@ -29,7 +29,7 @@ class FolderController extends Controller
 
     public function getFolders()
     {
-        $model = Folder::paginate(1);
+        $model = Folder::paginate(2);
 
         return response()->json([
             'success' => 1,
