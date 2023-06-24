@@ -116,7 +116,7 @@ class FolderService
 
         $end_time = microtime(true);
         $request_time = $end_time - $start_time;
-        echo "Время выполнения запроса: " . $request_time . " секунд" . PHP_EOL;
+        // echo "Время выполнения запроса: " . $request_time . " секунд" . PHP_EOL;
 
         $result = $resp->getBody()->getContents();
         $data = json_decode($result, true);

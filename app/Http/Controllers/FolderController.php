@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\File;
+use App\Models\FileError;
 use App\Models\Folder;
 use Illuminate\Http\Request;
 use App\Services\FolderService;
 use Illuminate\Support\Facades\Validator;
+use WeStacks\TeleBot\Laravel\TeleBot;
 
 class FolderController extends Controller
 {
@@ -20,6 +22,11 @@ class FolderController extends Controller
         $service = new FolderService;
 
         $result = $service->createFolder($request);
+
+        TeleBot::sendMessage([
+            "chat_id" => "-1001919078420",
+            "text" => "Ваш файл завершил проверку"
+        ]);
 
         return response()->json([
             'success' => 1,
@@ -55,9 +62,13 @@ class FolderController extends Controller
         ]);
     }
 
-    public function ZipTo(Request $request, $id)
+    public function deleteError($id)
     {
-        $service = new FolderService;
-        return $service->ZipTo($id, $request);
+        FileError::where("id", $id)->delete();
+        
+        return response()->json([
+            'success' => 1,
+            'message' => "Удалено"
+        ]);
     }
 }

@@ -23,8 +23,8 @@ return [
     */
 
     'bots' => [
-        // 'bot' => [
-        //     'token' => env('TELEGRAM_BOT_TOKEN'),
+        'bot' => [
+            'token' => env('5867304536:AAGuWsvOMsR-_-r1rIcsbmyRFPfkHzZPSbA'),
         //     'name' => env('TELEGRAM_BOT_NAME', null),
         //     'api_url' => env('TELEGRAM_API_URL', 'https://api.telegram.org/bot{TOKEN}/{METHOD}'),
         //     'exceptions' => true,
@@ -48,7 +48,7 @@ return [
         //     'handlers' => [
         //         // Your update handlers
         //     ],
-        // ],
+        ],
 
         'error_bot' => [
             'token' => '6140578446:AAFhkMlkkbZEfzfQN4QfuxCsKyCBjbjKZwQ',

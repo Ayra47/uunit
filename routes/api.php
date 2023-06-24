@@ -30,7 +30,8 @@ Route::controller(FolderController::class)->group(function () {
     Route::post('folder', 'createFolder');
     Route::get('folders', 'getFolders');
     Route::get('folders/{id}/files', 'getFiles');
-    Route::post('folders/{id}/get-info-test', 'ZipTo');
+    Route::get('file/{id}', 'getFiles');
+    Route::delete('file/error/{id}', 'deleteError');
 });
 
 Route::controller(MlController::class)->group(function () {
