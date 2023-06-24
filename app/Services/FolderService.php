@@ -41,18 +41,6 @@ class FolderService
         return $this->ZipTo($folder->id, $request);
     }
 
-    protected function sendFile()
-    {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', 'http://www.example.com/user/create', [
-            'form_params' => [
-                'email' => 'test@gmail.com',
-                'name' => 'Test user',
-                'password' => 'testpassword',
-            ]
-        ]);
-    }
-
     protected function checkedDir($file_path)
     {
         if (!is_dir($file_path)) {
@@ -111,9 +99,6 @@ class FolderService
             'extra_name' => $request['extra_name'],
         ];
 
-        // Set the file path of the archive to be uploaded
-
-        // Create a Guzzle client instance
         $client = new Client();
 
         $start_time = microtime(true);
@@ -126,6 +111,7 @@ class FolderService
                 ]
             ]
         ]);
+
         $end_time = microtime(true);
         $request_time = $end_time - $start_time;
         echo "Время выполнения запроса: " . $request_time . " секунд" . PHP_EOL;

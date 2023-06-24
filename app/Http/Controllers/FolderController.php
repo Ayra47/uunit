@@ -56,9 +56,9 @@ class FolderController extends Controller
         ]);
     }
 
-    public function ZipTo($id)
+    public function ZipTo(Request $request, $id)
     {
         $service = new FolderService;
-        return $service->ZipTo($id);
+        return $service->ZipTo($id, $request);
     }
 }

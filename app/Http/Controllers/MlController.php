@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Validator;
 class MlController extends Controller
 {
     public MlService $service;
-    
+
     public function __construct()
     {
         $this->service = new MlService;
     }
-    
+
     public function getInfo(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -37,9 +37,32 @@ class MlController extends Controller
 
     public function sendMessage(Request $request)
     {
+        if ($request['id']) {
+            $data = $request->toArray();
+        } else {
+            $data = [
+                'id' => 123,
+                'files' => [
+                    [
+                        'file_name' => '12',
+                        'folder' => '12/1.pdf',
+                        'name' => 'Starts on 45',
+                        'description' => 'Allowed differences:\n',
+                        'page' => 1
+                    ],
+                    [
+                        'file_name' => '12',
+                        'folder' => '12/1.pdf',
+                        'name' => 'Starts on 34',
+                        'description' => 'Allowed differences:\n',
+                        'page' => 3
+                    ]
+                ]
+            ];
+        }
+
         FrontWebsocket::dispatch([
-            "file_name" => $request['file_name'],
-            "message" => $request['message'] ?? "no message",
+            ...$data
         ]);
     }
 }
