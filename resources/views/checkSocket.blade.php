@@ -14,9 +14,18 @@
 @vite('resources/js/app.js')
 <script>
     setTimeout(() => {
-        console.log('2thirs');
+        console.log('first');
         window.Echo2.channel('front')
             .listen('.MyWebSocket', (e) => {
+                console.log('e', e);
+            })
+    }, 200);
+
+    
+    setTimeout(() => {
+        console.log('second');
+        window.Echo2.channel('front')
+            .listen('MyWebSocket', (e) => {
                 console.log('e', e);
             })
     }, 200);
