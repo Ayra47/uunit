@@ -32,7 +32,7 @@ Route::controller(FolderController::class)->group(function () {
     Route::get('folders/{id}/files', 'getFiles');
     Route::get('file/{id}', 'getFiles');
     Route::delete('file/error/{id}', 'deleteError');
-    Route::get('search/forders', 'searchFolder');
+    Route::get('search/folders', 'searchFolder');
 });
 
 Route::controller(MlController::class)->group(function () {
